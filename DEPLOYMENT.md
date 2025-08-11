@@ -43,7 +43,7 @@ The app automatically handles `postgres://` to `postgresql://` URL conversion fo
 3. **Configure Build Settings**
    - Build Command: Leave empty (auto-detected)
    - Output Directory: Leave empty
-   - Install Command: `pip install -r pyproject.toml` (if needed)
+   - Install Command: `pip install -r requirements-vercel.txt`
 
 4. **Add Environment Variables**
    - Go to Project Settings → Environment Variables
@@ -83,9 +83,18 @@ The app automatically creates database tables on first deployment. The PostgreSQ
 ## Troubleshooting
 
 - **Database Connection Issues**: Verify your DATABASE_URL format
-- **Import Errors**: Ensure all dependencies are in pyproject.toml
-- **Session Issues**: Verify SESSION_SECRET is set correctly
+- **Build Errors**: Check that `requirements-vercel.txt` contains all needed packages
+- **Vercel Config Error**: The error "functions property cannot be used with builds" has been fixed
+- **Session Issues**: Verify SESSION_SECRET is set correctly  
 - **Static Files**: Static files are served automatically by Vercel
+
+## Common Deployment Errors Fixed
+
+1. **"The functions property cannot be used in conjunction with the builds property"**
+   - Solution: Removed `functions` section from vercel.json, keeping only `builds`
+
+2. **Database initialization issues**
+   - Solution: Added proper error handling in database initialization
 
 ## Custom Domain (Optional)
 

@@ -9,6 +9,17 @@ FormBuilder is a web-based form creation and management platform that allows use
 Preferred communication style: Simple, everyday language.
 Deployment preference: Vercel with Neon PostgreSQL database.
 
+## Recent Changes
+
+**August 11, 2025 - Vercel Deployment Preparation:**
+- Fixed Vercel configuration conflicts (removed functions property from vercel.json)
+- Created serverless function entry point (api/index.py) for Vercel
+- Added PostgreSQL URL format handling for Neon database compatibility
+- Created requirements-vercel.txt for Vercel deployment dependencies
+- Added comprehensive deployment guide (DEPLOYMENT.md)
+- Fixed database model constructors and initialization
+- Added proper error handling for production deployment
+
 ## System Architecture
 
 ### Backend Architecture
