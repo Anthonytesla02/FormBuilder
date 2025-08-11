@@ -14,6 +14,15 @@ class Form(db.Model):
     updated_at = db.Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     is_active = db.Column(db.Boolean, default=True)
     
+    def __init__(self, title=None, description=None, form_uuid=None, **kwargs):
+        super().__init__(**kwargs)
+        if title is not None:
+            self.title = title
+        if description is not None:
+            self.description = description
+        if form_uuid is not None:
+            self.form_uuid = form_uuid
+    
     # Relationships
     submissions = db.relationship('Submission', backref='form', lazy=True, cascade='all, delete-orphan')
     
@@ -50,6 +59,15 @@ class Submission(db.Model):
     submitted_at = db.Column(DateTime, default=lambda: datetime.now(timezone.utc))
     ip_address = db.Column(db.String(45))  # Support IPv6
     user_agent = db.Column(db.String(500))
+    
+    def __init__(self, form_id=None, ip_address=None, user_agent=None, **kwargs):
+        super().__init__(**kwargs)
+        if form_id is not None:
+            self.form_id = form_id
+        if ip_address is not None:
+            self.ip_address = ip_address
+        if user_agent is not None:
+            self.user_agent = user_agent
     
     def get_data(self):
         """Parse and return submission data from JSON"""

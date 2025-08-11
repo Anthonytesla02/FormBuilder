@@ -7,6 +7,7 @@ FormBuilder is a web-based form creation and management platform that allows use
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Deployment preference: Vercel with Neon PostgreSQL database.
 
 ## System Architecture
 
