@@ -32,7 +32,7 @@ class Form(db.Model):
     
     def get_submission_count(self):
         """Get total number of submissions for this form"""
-        return len(self.submissions)
+        return db.session.query(Submission).filter_by(form_id=self.id).count()
     
     def get_completion_rate(self):
         """Calculate form completion rate (placeholder for now)"""
