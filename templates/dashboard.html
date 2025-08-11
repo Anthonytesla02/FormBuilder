@@ -1,283 +1,180 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard - FormCraft Pro{% endblock %}
+{% block title %}Dashboard - FormBuilder{% endblock %}
 
 {% block content %}
-<div class="bg-gray-50 min-h-screen">
-    <!-- Header -->
-    <div class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="py-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
-                        <p class="text-gray-600 mt-1">Manage your forms and analyze performance</p>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h2 mb-1">Dashboard</h1>
+            <p class="text-muted mb-0">Manage your forms and view submissions</p>
+        </div>
+        <a href="{{ url_for('new_form') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Create New Form
+        </a>
+    </div>
+
+    {% if forms %}
+    <div class="row g-4">
+        {% for form in forms %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title mb-0">{{ form.title }}</h5>
+                        <div class="dropdown">
+                            <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('view_form', form_uuid=form.form_uuid) }}" target="_blank">
+                                    <i class="fas fa-external-link-alt me-2"></i>Preview
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('form_analytics', form_id=form.id) }}">
+                                    <i class="fas fa-chart-bar me-2"></i>Analytics
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="POST" action="{{ url_for('duplicate_form', form_id=form.id) }}" class="d-inline">
+                                        <button class="dropdown-item" type="submit">
+                                            <i class="fas fa-copy me-2"></i>Duplicate
+                                        </button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form method="POST" action="{{ url_for('delete_form', form_id=form.id) }}" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this form?')">
+                                        <button class="dropdown-item text-danger" type="submit">
+                                            <i class="fas fa-trash me-2"></i>Delete
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <a href="{{ url_for('new_form') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                        <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
-                        Create Form
-                    </a>
+                    
+                    <p class="card-text text-muted small mb-3">
+                        {{ form.description[:100] + '...' if form.description and form.description|length > 100 else form.description or 'No description' }}
+                    </p>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <div class="bg-light rounded p-2 text-center">
+                                <div class="fw-bold text-primary">{{ form.get_submission_count() }}</div>
+                                <small class="text-muted">Submissions</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="bg-light rounded p-2 text-center">
+                                <div class="fw-bold text-success">{{ "%.1f"|format(form.get_completion_rate()) }}%</div>
+                                <small class="text-muted">Completion</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary btn-sm flex-fill" onclick="copyShareLink('{{ url_for('view_form', form_uuid=form.form_uuid, _external=True) }}')">
+                            <i class="fas fa-link me-1"></i>Share Link
+                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-download me-1"></i>Export
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('export_submissions', form_id=form.id, format='csv') }}">
+                                    <i class="fas fa-file-csv me-2"></i>CSV
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('export_submissions', form_id=form.id, format='json') }}">
+                                    <i class="fas fa-file-code me-2"></i>JSON
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('export_submissions', form_id=form.id, format='pdf') }}">
+                                    <i class="fas fa-file-pdf me-2"></i>PDF
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-transparent">
+                    <small class="text-muted">
+                        <i class="fas fa-calendar me-1"></i>
+                        Created {{ form.created_at.strftime('%b %d, %Y') }}
+                    </small>
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Stats Overview -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-lg bg-blue-50">
-                        <i data-lucide="layout-template" class="w-6 h-6 text-blue-600"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-2xl font-bold text-gray-900">{{ stats.total_forms }}</p>
-                        <p class="text-sm font-medium text-gray-600">Total Forms</p>
-                    </div>
-                </div>
-            </div>
+    <!-- Recent Submissions Section -->
+    {% set recent_submissions = [] %}
+    {% for form in forms %}
+        {% for submission in form.submissions[:5] %}
+            {% set _ = recent_submissions.append(submission) %}
+        {% endfor %}
+    {% endfor %}
 
-            <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-lg bg-green-50">
-                        <i data-lucide="file-text" class="w-6 h-6 text-green-600"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-2xl font-bold text-gray-900">{{ stats.total_submissions }}</p>
-                        <p class="text-sm font-medium text-gray-600">Submissions</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-lg bg-purple-50">
-                        <i data-lucide="eye" class="w-6 h-6 text-purple-600"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-2xl font-bold text-gray-900">{{ stats.total_views }}</p>
-                        <p class="text-sm font-medium text-gray-600">Total Views</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-lg bg-orange-50">
-                        <i data-lucide="trending-up" class="w-6 h-6 text-orange-600"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-2xl font-bold text-gray-900">{{ stats.avg_completion_rate }}%</p>
-                        <p class="text-sm font-medium text-gray-600">Avg. Completion</p>
+    {% if recent_submissions %}
+    <div class="mt-5">
+        <h3 class="h4 mb-3">Recent Submissions</h3>
+        <div class="row g-3">
+            {% for submission in recent_submissions[:6] %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h6 class="card-title mb-0">{{ submission.form.title }}</h6>
+                            <small class="text-muted">{{ submission.submitted_at.strftime('%m/%d %H:%M') }}</small>
+                        </div>
+                        
+                        <div class="text-muted small mb-2">
+                            {% set data = submission.get_data() %}
+                            {% set field_count = data.keys()|length %}
+                            {{ field_count }} field{{ 's' if field_count != 1 else '' }} submitted
+                        </div>
+                        
+                        <button class="btn btn-outline-primary btn-sm" onclick="viewSubmission({{ submission.id }})">
+                            <i class="fas fa-eye me-1"></i>View Details
+                        </button>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-
-        <!-- Forms Grid -->
-        {% if forms %}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {% for form in forms %}
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 group">
-                    <!-- Card Header -->
-                    <div class="p-6 pb-4">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
-                                    <i data-lucide="layout-template" class="w-5 h-5 text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">{{ form.title }}</h3>
-                                </div>
-                            </div>
-                            
-                            <!-- Dropdown Menu -->
-                            <div class="relative">
-                                <button class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors" onclick="toggleDropdown({{ form.id }})">
-                                    <i data-lucide="more-vertical" class="w-4 h-4"></i>
-                                </button>
-                                <div id="dropdown-{{ form.id }}" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
-                                    <a href="{{ url_for('form_analytics', form_id=form.id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-t-lg">
-                                        <i data-lucide="bar-chart" class="w-4 h-4 mr-3"></i>Analytics
-                                    </a>
-                                    <a href="{{ url_for('manage_form', form_id=form.id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                                        <i data-lucide="settings" class="w-4 h-4 mr-3"></i>Manage
-                                    </a>
-                                    <button onclick="duplicateForm({{ form.id }})" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                                        <i data-lucide="copy" class="w-4 h-4 mr-3"></i>Duplicate
-                                    </button>
-                                    <div class="border-t border-gray-100"></div>
-                                    <button onclick="deleteForm({{ form.id }})" class="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-b-lg">
-                                        <i data-lucide="trash-2" class="w-4 h-4 mr-3"></i>Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">
-                            {{ form.description[:100] }}{% if form.description|length > 100 %}...{% endif %}
-                        </p>
-
-                        <!-- Form Stats -->
-                        <div class="grid grid-cols-3 gap-4 mb-4">
-                            <div class="text-center">
-                                <p class="text-2xl font-bold text-gray-900">{{ form.get_submission_count() }}</p>
-                                <p class="text-xs font-medium text-gray-500">Submissions</p>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-2xl font-bold text-gray-900">{{ form.views_count }}</p>
-                                <p class="text-xs font-medium text-gray-500">Views</p>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-2xl font-bold text-gray-900">{{ form.get_completion_rate() }}%</p>
-                                <p class="text-xs font-medium text-gray-500">Completion</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card Footer -->
-                    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 rounded-b-xl">
-                        <div class="flex items-center justify-between">
-                            <div class="flex space-x-3">
-                                <a href="{{ url_for('view_form', form_uuid=form.form_uuid) }}" target="_blank" class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">
-                                    <i data-lucide="external-link" class="w-4 h-4 mr-1"></i>
-                                    View
-                                </a>
-                                <button onclick="copyFormLink('{{ url_for('view_form', form_uuid=form.form_uuid, _external=True) }}', this)" class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">
-                                    <i data-lucide="link" class="w-4 h-4 mr-1"></i>
-                                    Copy Link
-                                </button>
-                            </div>
-                            <p class="text-xs text-gray-500">{{ form.created_at.strftime('%b %d, %Y') }}</p>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <!-- Empty State -->
-            <div class="text-center py-16">
-                <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
-                    <i data-lucide="layout-template" class="w-12 h-12 text-gray-400"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">No forms yet</h3>
-                <p class="text-gray-600 mb-8 max-w-md mx-auto">Create your first form to start collecting responses and analyzing data from your audience.</p>
-                <div class="space-y-4">
-                    <a href="{{ url_for('new_form') }}" class="inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-white bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                        <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
-                        Create Your First Form
-                    </a>
-                </div>
-            </div>
-        {% endif %}
     </div>
+    {% endif %}
+
+    {% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-wpforms display-1 text-muted mb-3"></i>
+        <h3>No Forms Yet</h3>
+        <p class="text-muted mb-4">Get started by creating your first form</p>
+        <a href="{{ url_for('new_form') }}" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus me-2"></i>Create Your First Form
+        </a>
+    </div>
+    {% endif %}
 </div>
 
-<script>
-// Initialize icons after page load
-document.addEventListener('DOMContentLoaded', function() {
-    lucide.createIcons();
-});
+<!-- Submission Detail Modal -->
+<div class="modal fade" id="submissionModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Submission Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="submissionDetails">
+                <div class="text-center py-3">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-// Toggle dropdown menu
-function toggleDropdown(formId) {
-    const dropdown = document.getElementById(`dropdown-${formId}`);
-    const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
-    
-    // Close all other dropdowns
-    allDropdowns.forEach(d => {
-        if (d.id !== `dropdown-${formId}`) {
-            d.classList.add('hidden');
-        }
-    });
-    
-    // Toggle current dropdown
-    dropdown.classList.toggle('hidden');
-}
-
-// Close dropdowns when clicking outside
-document.addEventListener('click', function(event) {
-    if (!event.target.closest('[onclick^="toggleDropdown"]')) {
-        document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
-            d.classList.add('hidden');
-        });
-    }
-});
-
-// Copy form link to clipboard
-async function copyFormLink(url, button) {
-    try {
-        await navigator.clipboard.writeText(url);
-        
-        // Update button to show success
-        const icon = button.querySelector('i');
-        const text = button.childNodes[button.childNodes.length - 1];
-        
-        icon.setAttribute('data-lucide', 'check');
-        text.textContent = 'Copied!';
-        button.classList.remove('text-gray-600', 'hover:text-primary-600');
-        button.classList.add('text-green-600');
-        
-        // Refresh icon
-        lucide.createIcons();
-        
-        // Reset after 2 seconds
-        setTimeout(() => {
-            icon.setAttribute('data-lucide', 'link');
-            text.textContent = 'Copy Link';
-            button.classList.remove('text-green-600');
-            button.classList.add('text-gray-600', 'hover:text-primary-600');
-            lucide.createIcons();
-        }, 2000);
-        
-    } catch (err) {
-        console.error('Failed to copy link:', err);
-    }
-}
-
-// Delete form
-async function deleteForm(formId) {
-    if (confirm('Are you sure you want to delete this form? This action cannot be undone.')) {
-        try {
-            const response = await fetch(`/form/${formId}/delete`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-            
-            if (response.ok) {
-                // Show success message and reload
-                window.location.reload();
-            } else {
-                alert('Error deleting form. Please try again.');
-            }
-        } catch (error) {
-            console.error('Error deleting form:', error);
-            alert('Error deleting form. Please try again.');
-        }
-    }
-}
-
-// Duplicate form
-async function duplicateForm(formId) {
-    try {
-        const response = await fetch(`/form/${formId}/duplicate`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        
-        if (response.ok) {
-            window.location.reload();
-        } else {
-            alert('Error duplicating form. Please try again.');
-        }
-    } catch (error) {
-        console.error('Error duplicating form:', error);
-        alert('Error duplicating form. Please try again.');
-    }
-}
-</script>
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 {% endblock %}

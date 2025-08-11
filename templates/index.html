@@ -1,159 +1,140 @@
 {% extends "base.html" %}
 
-{% block title %}FormCraft Pro - Build Professional Forms{% endblock %}
+{% block title %}FormBuilder - Create Beautiful Forms{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<div class="hero-gradient text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div class="text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Create Professional Forms
-                <span class="block text-blue-200">in Minutes, Not Hours</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">
-                Build stunning forms, collect responses, and analyze data with our powerful drag-and-drop form builder. No coding required.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="{{ url_for('auth.register') }}" class="inline-flex items-center px-8 py-4 text-lg font-semibold rounded-lg bg-white text-primary-700 hover:bg-gray-50 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
-                    <i data-lucide="rocket" class="w-6 h-6 mr-3"></i>
-                    Get Started Free
-                </a>
-                <a href="#features" class="inline-flex items-center px-8 py-4 text-lg font-semibold rounded-lg border-2 border-white text-white hover:bg-white hover:text-primary-700 transition-all duration-300">
-                    <i data-lucide="play-circle" class="w-6 h-6 mr-3"></i>
-                    See How It Works
-                </a>
+<div class="hero-section bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-3">Create Beautiful Forms in Minutes</h1>
+                <p class="lead mb-4">Build professional forms with our intuitive drag-and-drop builder. Collect responses, analyze data, and export results effortlessly.</p>
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('new_form') }}" class="btn btn-light btn-lg">
+                        <i class="fas fa-plus me-2"></i>Create Form
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-wpforms display-1 opacity-75"></i>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Features Section -->
-<section id="features" class="py-20 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Everything You Need to Build Amazing Forms
-            </h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Powerful features that help you create, distribute, and analyze forms like a pro
-            </p>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto text-center mb-5">
+            <h2 class="h1 mb-3">Powerful Features</h2>
+            <p class="lead text-muted">Everything you need to create, manage, and analyze your forms</p>
+        </div>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-primary bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-magic text-white"></i>
+                    </div>
+                    <h5 class="card-title">Drag & Drop Builder</h5>
+                    <p class="card-text text-muted">Create forms effortlessly with our intuitive drag-and-drop interface. No coding required.</p>
+                </div>
+            </div>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Feature 1 -->
-            <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100">
-                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6">
-                    <i data-lucide="mouse-pointer-click" class="w-8 h-8 text-white"></i>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-success bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-share-alt text-white"></i>
+                    </div>
+                    <h5 class="card-title">Easy Sharing</h5>
+                    <p class="card-text text-muted">Generate unique shareable links for your forms and start collecting responses instantly.</p>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">Drag & Drop Builder</h3>
-                <p class="text-gray-600 leading-relaxed">Create forms effortlessly with our intuitive drag-and-drop interface. Add fields, customize layouts, and design beautiful forms in minutes.</p>
             </div>
-            
-            <!-- Feature 2 -->
-            <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100">
-                <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-6">
-                    <i data-lucide="bar-chart-3" class="w-8 h-8 text-white"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">Advanced Analytics</h3>
-                <p class="text-gray-600 leading-relaxed">Get detailed insights with real-time analytics, submission tracking, and comprehensive reporting to understand your audience better.</p>
-            </div>
-            
-            <!-- Feature 3 -->
-            <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100">
-                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-6">
-                    <i data-lucide="smartphone" class="w-8 h-8 text-white"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">Mobile Responsive</h3>
-                <p class="text-gray-600 leading-relaxed">Your forms look stunning and work flawlessly on all devices. Perfect user experience from desktop to mobile.</p>
-            </div>
-            
-            <!-- Feature 4 -->
-            <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100">
-                <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mb-6">
-                    <i data-lucide="share" class="w-8 h-8 text-white"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">Easy Sharing</h3>
-                <p class="text-gray-600 leading-relaxed">Share your forms with a simple link, embed them on websites, or distribute via social media with one click.</p>
-            </div>
-            
-            <!-- Feature 5 -->
-            <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100">
-                <div class="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center mb-6">
-                    <i data-lucide="download" class="w-8 h-8 text-white"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">Multiple Export Formats</h3>
-                <p class="text-gray-600 leading-relaxed">Export your data in CSV, JSON, or PDF formats for further analysis and integration with your existing workflows.</p>
-            </div>
-            
-            <!-- Feature 6 -->
-            <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100">
-                <div class="w-16 h-16 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mb-6">
-                    <i data-lucide="shield-check" class="w-8 h-8 text-white"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">Secure & Reliable</h3>
-                <p class="text-gray-600 leading-relaxed">Enterprise-grade security with SSL encryption and secure data storage. Your information is protected with industry-standard measures.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Stats Section -->
-<section class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Trusted by Teams Worldwide
-            </h2>
-            <p class="text-xl text-gray-600">
-                Join thousands of professionals who rely on FormCraft Pro
-            </p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="text-center">
-                <div class="text-4xl font-bold text-primary-600 mb-2">10,000+</div>
-                <div class="text-lg text-gray-600 font-medium">Forms Created</div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-info bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-chart-bar text-white"></i>
+                    </div>
+                    <h5 class="card-title">Analytics Dashboard</h5>
+                    <p class="card-text text-muted">Analyze your form performance with detailed analytics and beautiful visualizations.</p>
+                </div>
             </div>
-            <div class="text-center">
-                <div class="text-4xl font-bold text-primary-600 mb-2">500K+</div>
-                <div class="text-lg text-gray-600 font-medium">Responses Collected</div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-warning bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-download text-white"></i>
+                    </div>
+                    <h5 class="card-title">Data Export</h5>
+                    <p class="card-text text-muted">Export your form data in multiple formats including CSV, JSON, and PDF.</p>
+                </div>
             </div>
-            <div class="text-center">
-                <div class="text-4xl font-bold text-primary-600 mb-2">99.9%</div>
-                <div class="text-lg text-gray-600 font-medium">Uptime Guaranteed</div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-danger bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-mobile-alt text-white"></i>
+                    </div>
+                    <h5 class="card-title">Mobile Responsive</h5>
+                    <p class="card-text text-muted">Your forms look great and work perfectly on all devices and screen sizes.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-secondary bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-shield-alt text-white"></i>
+                    </div>
+                    <h5 class="card-title">Secure & Reliable</h5>
+                    <p class="card-text text-muted">Your data is safe with our secure infrastructure and reliable hosting.</p>
+                </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<!-- CTA Section -->
-<section class="py-20 bg-gradient-to-r from-primary-600 to-primary-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
-                Ready to Build Your First Form?
-            </h2>
-            <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                Start creating professional forms today. No credit card required, no setup fees.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="{{ url_for('auth.register') }}" class="inline-flex items-center px-8 py-4 text-lg font-semibold rounded-lg bg-white text-primary-700 hover:bg-gray-50 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
-                    <i data-lucide="user-plus" class="w-6 h-6 mr-3"></i>
-                    Create Free Account
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="h1 mb-3">Ready to Get Started?</h2>
+                <p class="lead mb-4">Join thousands of users who trust FormBuilder for their form creation needs.</p>
+                <a href="{{ url_for('new_form') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-rocket me-2"></i>Start Building Now
                 </a>
-                <a href="{{ url_for('auth.login') }}" class="inline-flex items-center px-8 py-4 text-lg font-semibold rounded-lg border-2 border-white text-white hover:bg-white hover:text-primary-700 transition-all duration-300">
-                    <i data-lucide="log-in" class="w-6 h-6 mr-3"></i>
-                    Sign In
-                </a>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="bg-white rounded p-3 shadow-sm">
+                            <h3 class="h2 text-primary mb-0">10K+</h3>
+                            <small class="text-muted">Forms Created</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="bg-white rounded p-3 shadow-sm">
+                            <h3 class="h2 text-success mb-0">50K+</h3>
+                            <small class="text-muted">Responses Collected</small>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    lucide.createIcons();
-});
-</script>
+</div>
 {% endblock %}
