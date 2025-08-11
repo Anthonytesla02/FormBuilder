@@ -1,0 +1,37 @@
+Aug 11 20:09:49.36
+GET
+500
+formbuilder-gg728ia74-anthony-teslas-projects.vercel.app
+/favicon.ico
+Traceback (most recent call last): File "/var/task/vc__handler__python.py", line 14, in <module> __vc_spec.loader.exec_module(__vc_module) File "<frozen importlib._bootstrap_external>", line 999, in exec_module File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed File "/var/task/api/index.py", line 2, in <module> from main import app File "/var/task/main.py", line 1, in <module> from app import app # noqa: F401 ^^^^^^^^^^^^^^^^^^^ File "/var/task/app.py", line 3, in <module> from flask import Flask ModuleNotFoundError: No module named 'flask' Python process exited with exit status: 1. The logs above can help with debugging the issue. Traceback (most recent call last): File "/var/task/vc__handler__python.py", line 14, in <module> __vc_spec.loader.exec_module(__vc_module) File "<frozen importlib._bootstrap_external>", line 999, in exec_module File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed File "/var/task/api/index.py", line 2, in <module> from main import app File "/var/task/main.py", line 1, in <module> from app import app # noqa: F401 ^^^^^^^^^^^^^^^^^^^ File "/var/task/app.py", line 3, in <module> from flask import Flask ModuleNotFoundError: No module named 'flask' Python process exited with exit status: 1. The logs above can help with debugging the issue.
+Aug 11 20:09:49.20
+GET
+500
+formbuilder-gg728ia74-anthony-teslas-projects.vercel.app
+/favicon.ico
+Traceback (most recent call last): File "/var/task/vc__handler__python.py", line 14, in <module> __vc_spec.loader.exec_module(__vc_module) File "<frozen importlib._bootstrap_external>", line 999, in exec_module File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed File "/var/task/api/index.py", line 2, in <module> from main import app File "/var/task/main.py", line 1, in <module> from app import app # noqa: F401 ^^^^^^^^^^^^^^^^^^^ File "/var/task/app.py", line 3, in <module> from flask import Flask ModuleNotFoundError: No module named 'flask' Python process exited with exit status: 1. The logs above can help with debugging the issue.
+Aug 11 20:09:48.96
+GET
+500
+formbuilder-gg728ia74-anthony-teslas-projects.vercel.app
+/
+Traceback (most recent call last): File "/var/task/vc__handler__python.py", line 14, in <module> __vc_spec.loader.exec_module(__vc_module) File "<frozen importlib._bootstrap_external>", line 999, in exec_module File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed File "/var/task/api/index.py", line 2, in <module> from main import app File "/var/task/main.py", line 1, in <module> from app import app # noqa: F401 ^^^^^^^^^^^^^^^^^^^ File "/var/task/app.py", line 3, in <module> from flask import Flask ModuleNotFoundError: No module named 'flask' Python process exited with exit status: 1. The logs above can help with debugging the issue.
+Aug 11 20:09:48.83
+GET
+500
+formbuilder-gg728ia74-anthony-teslas-projects.vercel.app
+/
+Traceback (most recent call last): File "/var/task/vc__handler__python.py", line 14, in <module> __vc_spec.loader.exec_module(__vc_module) File "<frozen importlib._bootstrap_external>", line 999, in exec_module File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed File "/var/task/api/index.py", line 2, in <module> from main import app File "/var/task/main.py", line 1, in <module> from app import app # noqa: F401 ^^^^^^^^^^^^^^^^^^^ File "/var/task/app.py", line 3, in <module> from flask import Flask ModuleNotFoundError: No module named 'flask' Python process exited with exit status: 1. The logs above can help with debugging the issue.
+Aug 11 20:09:48.27
+GET
+500
+formbuilder-gg728ia74-anthony-teslas-projects.vercel.app
+/
+Traceback (most recent call last): File "/var/task/vc__handler__python.py", line 14, in <module> __vc_spec.loader.exec_module(__vc_module) File "<frozen importlib._bootstrap_external>", line 999, in exec_module File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed File "/var/task/api/index.py", line 2, in <module> from main import app File "/var/task/main.py", line 1, in <module> from app import app # noqa: F401 ^^^^^^^^^^^^^^^^^^^ File "/var/task/app.py", line 3, in <module> from flask import Flask ModuleNotFoundError: No module named 'flask' Python process exited with exit status: 1. The logs above can help with debugging the issue.
+Aug 11 20:09:48.26
+GET
+500
+formbuilder-gg728ia74-anthony-teslas-projects.vercel.app
+/
+Traceback (most recent call last): File "/var/task/vc__handler__python.py", line 14, in <module> __vc_spec.loader.exec_module(__vc_module) File "<frozen importlib._bootstrap_external>", line 999, in exec_module File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed File "/var/task/api/index.py", line 2, in <module> from main import app File "/var/task/main.py", line 1, in <module> from app import app # noqa: F401 ^^^^^^^^^^^^^^^^^^^ File "/var/task/app.py", line 3, in <module> from flask import Flask ModuleNotFoundError: No module named 'flask' Python process exited with exit status: 1. The logs above can help with debugging the issue.
+No more logs to show within selected timeline

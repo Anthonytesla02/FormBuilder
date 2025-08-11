@@ -58,8 +58,9 @@ The app automatically handles `postgres://` to `postgresql://` URL conversion fo
 The app is configured with these key files:
 
 - `vercel.json`: Deployment configuration
-- `api/index.py`: Serverless function entry point
-- `main.py`: Flask app entry point
+- `wsgi.py`: WSGI entry point for Vercel
+- `app.py`: Flask app with all routes and configuration
+- `requirements-vercel.txt`: Dependencies for Vercel
 - `.env.example`: Template for environment variables
 
 ## Database Initialization
@@ -93,7 +94,10 @@ The app automatically creates database tables on first deployment. The PostgreSQ
 1. **"The functions property cannot be used in conjunction with the builds property"**
    - Solution: Removed `functions` section from vercel.json, keeping only `builds`
 
-2. **Database initialization issues**
+2. **Circular import issues in serverless functions**
+   - Solution: Created simple `wsgi.py` entry point and reorganized imports
+
+3. **Database initialization issues**
    - Solution: Added proper error handling in database initialization
 
 ## Custom Domain (Optional)

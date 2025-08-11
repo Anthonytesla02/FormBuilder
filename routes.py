@@ -1,6 +1,4 @@
 from flask import render_template, request, redirect, url_for, flash, jsonify, send_file
-from app import app, db
-from models import Form, Submission
 import json
 import uuid
 from datetime import datetime, timezone
@@ -11,6 +9,10 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
+
+# Import app and models after Flask imports to avoid circular imports
+from app import app, db
+from models import Form, Submission
 
 @app.route('/')
 def index():

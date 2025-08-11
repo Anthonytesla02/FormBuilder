@@ -47,9 +47,13 @@ def init_db():
 # Initialize database for production
 init_db()
 
-# Import routes
-from routes import *  # noqa: F401, F403
+# Import routes after app initialization to avoid circular imports
+import routes  # noqa: F401
 
-# For Vercel deployment
+# For Vercel deployment - expose app at module level
+def create_app():
+    return app
+
+# For development
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)

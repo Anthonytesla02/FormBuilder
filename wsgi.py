@@ -1,7 +1,7 @@
-# Vercel serverless function entry point
+# WSGI entry point for Vercel deployment
 from app import app
 
-# Export the Flask app for Vercel
+# This is what Vercel will use
 application = app
 
 if __name__ == "__main__":
