@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - {{ form.title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">Form Analytics</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{ form.title }}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-download me-2"></i>Export Data
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ url_for('export_submissions', form_id=form.id, format='csv') }}">
+                    <i class="fas fa-file-csv me-2"></i>CSV
+                </a></li>
+                <li><a class="dropdown-item" href="{{ url_for('export_submissions', form_id=form.id, format='json') }}">
+                    <i class="fas fa-file-code me-2"></i>JSON
+                </a></li>
+                <li><a class="dropdown-item" href="{{ url_for('export_submissions', form_id=form.id, format='pdf') }}">
+                    <i class="fas fa-file-pdf me-2"></i>PDF
+                </a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Overview Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Total Submissions</h5>
+                            <h2 class="mb-0">{{ analytics.total_submissions }}</h2>
+                        </div>
+                        <i class="fas fa-paper-plane fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Completion Rate</h5>
+                            <h2 class="mb-0">{{ "%.1f"|format(analytics.completion_rate) }}%</h2>
+                        </div>
+                        <i class="fas fa-check-circle fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Form Fields</h5>
+                            <h2 class="mb-0">{{ form.get_fields()|length }}</h2>
+                        </div>
+                        <i class="fas fa-list fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Avg. Response Time</h5>
+                            <h2 class="mb-0">2.3min</h2>
+                        </div>
+                        <i class="fas fa-clock fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Submissions Over Time Chart -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Submissions Over Time</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="submissionsChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Form Performance -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Form Performance</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="performanceChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Field Analytics -->
+    {% if analytics.field_analytics %}
+    <div class="row g-4 mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Field Response Rates</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        {% for field_name, field_data in analytics.field_analytics.items() %}
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-medium">{{ field_name }}</span>
+                                <span class="text-muted">{{ field_data.response_count }}/{{ analytics.total_submissions }}</span>
+                            </div>
+                            <div class="progress mb-1">
+                                <div class="progress-bar" role="progressbar" 
+                                     style="width: {{ field_data.response_rate }}%"
+                                     aria-valuenow="{{ field_data.response_rate }}" 
+                                     aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+                            <small class="text-muted">{{ "%.1f"|format(field_data.response_rate) }}% response rate</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Recent Submissions -->
+    <div class="row g-4 mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Submissions</h5>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-list me-1"></i>View All
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if form.submissions %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Submitted</th>
+                                    <th>IP Address</th>
+                                    <th>Fields Completed</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for submission in form.submissions[:10] %}
+                                <tr>
+                                    <td><strong>#{{ submission.id }}</strong></td>
+                                    <td>
+                                        {{ submission.submitted_at.strftime('%m/%d/%Y %H:%M') }}
+                                        <br><small class="text-muted">{{ submission.submitted_at.strftime('%A') }}</small>
+                                    </td>
+                                    <td><code>{{ submission.ip_address or 'Unknown' }}</code></td>
+                                    <td>
+                                        {% set data = submission.get_data() %}
+                                        <span class="badge bg-info">{{ data.keys()|length }} fields</span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('view_submission', submission_id=submission.id) }}" 
+                                           class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye me-1"></i>View
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-inbox text-muted display-4 mb-3"></i>
+                        <h5>No Submissions Yet</h5>
+                        <p class="text-muted">Share your form to start collecting responses.</p>
+                        <button class="btn btn-outline-primary" onclick="copyShareLink('{{ url_for('view_form', form_uuid=form.form_uuid, _external=True) }}')">
+                            <i class="fas fa-link me-2"></i>Copy Share Link
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Data passed to JavaScript -->
+<script id="analyticsData" type="application/json">
+{{ analytics | tojson }}
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+<script>
+function copyShareLink(url) {
+    navigator.clipboard.writeText(url).then(function() {
+        // Show success message
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-success alert-dismissible fade show position-fixed';
+        alert.style = 'top: 20px; right: 20px; z-index: 9999;';
+        alert.innerHTML = `
+            <i class="fas fa-check me-2"></i>Share link copied to clipboard!
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alert);
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            if (alert.parentNode) {
+                alert.parentNode.removeChild(alert);
+            }
+        }, 3000);
+    }).catch(function() {
+        alert('Could not copy link. Please copy manually: ' + url);
+    });
+}
+</script>
+{% endblock %}
